@@ -25,7 +25,7 @@ namespace KeyboardUnchatter.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
         public decimal chatterThreshold {
             get {
                 return ((decimal)(this["chatterThreshold"]));

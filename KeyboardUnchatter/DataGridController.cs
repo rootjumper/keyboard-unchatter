@@ -81,6 +81,12 @@ namespace KeyboardUnchatter
             UpdateGridCell(keyData);
         }
 
+        public void Reset()
+        {
+            _keyDataStatus.Clear();
+            _dataGrid.Rows.Clear();
+        }
+
         private void UpdateGridCell(KeyData keyData)
         {
             bool cellUpdated = false;

@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this._statusPanel = new System.Windows.Forms.Panel();
+            this.labelTypingSpeed = new System.Windows.Forms.Label();
             this._statusPanelLabel = new System.Windows.Forms.Label();
             this._buttonActivate = new System.Windows.Forms.Button();
             this._mainDataGrid = new System.Windows.Forms.DataGridView();
@@ -40,6 +41,12 @@
             this.FailureRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._dataGridGroupBox = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tbTestInput = new System.Windows.Forms.RichTextBox();
+            this.listBoxIntervals = new System.Windows.Forms.ListBox();
+            this._runAtStartupCheckBox = new System.Windows.Forms.CheckBox();
             this._activateOnLaunchCheckBox = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -52,6 +59,7 @@
             this._openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this._exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnReset = new System.Windows.Forms.Button();
             this._statusPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._mainDataGrid)).BeginInit();
             this._dataGridGroupBox.SuspendLayout();
@@ -65,11 +73,24 @@
             this._statusPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._statusPanel.BackColor = System.Drawing.SystemColors.ControlDark;
+            this._statusPanel.Controls.Add(this.labelTypingSpeed);
             this._statusPanel.Controls.Add(this._statusPanelLabel);
             this._statusPanel.Location = new System.Drawing.Point(0, 1);
             this._statusPanel.Name = "_statusPanel";
-            this._statusPanel.Size = new System.Drawing.Size(620, 41);
+            this._statusPanel.Size = new System.Drawing.Size(640, 41);
             this._statusPanel.TabIndex = 0;
+            // 
+            // labelTypingSpeed
+            // 
+            this.labelTypingSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelTypingSpeed.AutoSize = true;
+            this.labelTypingSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F);
+            this.labelTypingSpeed.Location = new System.Drawing.Point(161, 4);
+            this.labelTypingSpeed.Name = "labelTypingSpeed";
+            this.labelTypingSpeed.Size = new System.Drawing.Size(286, 37);
+            this.labelTypingSpeed.TabIndex = 12;
+            this.labelTypingSpeed.Text = "Typing Speed: N/A";
             // 
             // _statusPanelLabel
             // 
@@ -78,15 +99,15 @@
             this._statusPanelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._statusPanelLabel.Location = new System.Drawing.Point(0, 4);
             this._statusPanelLabel.Name = "_statusPanelLabel";
-            this._statusPanelLabel.Size = new System.Drawing.Size(620, 37);
+            this._statusPanelLabel.Size = new System.Drawing.Size(640, 37);
             this._statusPanelLabel.TabIndex = 0;
             this._statusPanelLabel.Text = "Not Active";
-            this._statusPanelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this._statusPanelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // _buttonActivate
             // 
             this._buttonActivate.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this._buttonActivate.Location = new System.Drawing.Point(238, 387);
+            this._buttonActivate.Location = new System.Drawing.Point(248, 422);
             this._buttonActivate.Name = "_buttonActivate";
             this._buttonActivate.Size = new System.Drawing.Size(137, 27);
             this._buttonActivate.TabIndex = 2;
@@ -115,7 +136,7 @@
             this._mainDataGrid.MultiSelect = false;
             this._mainDataGrid.Name = "_mainDataGrid";
             this._mainDataGrid.RowHeadersVisible = false;
-            this._mainDataGrid.Size = new System.Drawing.Size(583, 204);
+            this._mainDataGrid.Size = new System.Drawing.Size(603, 212);
             this._mainDataGrid.TabIndex = 3;
             this._mainDataGrid.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.DataSortCompare);
             // 
@@ -145,9 +166,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._dataGridGroupBox.Controls.Add(this._mainDataGrid);
-            this._dataGridGroupBox.Location = new System.Drawing.Point(12, 152);
+            this._dataGridGroupBox.Location = new System.Drawing.Point(12, 179);
             this._dataGridGroupBox.Name = "_dataGridGroupBox";
-            this._dataGridGroupBox.Size = new System.Drawing.Size(595, 229);
+            this._dataGridGroupBox.Size = new System.Drawing.Size(615, 237);
             this._dataGridGroupBox.TabIndex = 4;
             this._dataGridGroupBox.TabStop = false;
             this._dataGridGroupBox.Text = "Key Statistics";
@@ -156,6 +177,12 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.tbTestInput);
+            this.groupBox1.Controls.Add(this.listBoxIntervals);
+            this.groupBox1.Controls.Add(this._runAtStartupCheckBox);
             this.groupBox1.Controls.Add(this._activateOnLaunchCheckBox);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label1);
@@ -165,10 +192,71 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Location = new System.Drawing.Point(12, 48);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(595, 98);
+            this.groupBox1.Size = new System.Drawing.Size(615, 125);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Settings";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(7, 95);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(66, 13);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "System Start";
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(534, 9);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(73, 26);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Diagnose\r\nKeyPress (ms)";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(203, 9);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(294, 39);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "Type here to get a median value in ms for your typing speed. \r\nSet this value a b" +
+    "it lower.\r\ne.g. Typing Speed: 100ms -> Chatter Treshold: 70ms";
+            // 
+            // tbTestInput
+            // 
+            this.tbTestInput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbTestInput.Location = new System.Drawing.Point(206, 54);
+            this.tbTestInput.Name = "tbTestInput";
+            this.tbTestInput.Size = new System.Drawing.Size(326, 66);
+            this.tbTestInput.TabIndex = 11;
+            this.tbTestInput.Text = "";
+            // 
+            // listBoxIntervals
+            // 
+            this.listBoxIntervals.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBoxIntervals.FormattingEnabled = true;
+            this.listBoxIntervals.Location = new System.Drawing.Point(537, 51);
+            this.listBoxIntervals.Name = "listBoxIntervals";
+            this.listBoxIntervals.Size = new System.Drawing.Size(72, 69);
+            this.listBoxIntervals.TabIndex = 10;
+            // 
+            // _runAtStartupCheckBox
+            // 
+            this._runAtStartupCheckBox.AutoSize = true;
+            this._runAtStartupCheckBox.Location = new System.Drawing.Point(112, 94);
+            this._runAtStartupCheckBox.Name = "_runAtStartupCheckBox";
+            this._runAtStartupCheckBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this._runAtStartupCheckBox.Size = new System.Drawing.Size(15, 14);
+            this._runAtStartupCheckBox.TabIndex = 8;
+            this._runAtStartupCheckBox.UseVisualStyleBackColor = true;
+            this._runAtStartupCheckBox.CheckedChanged += new System.EventHandler(this.OnRunAtStartupCheckBoxChanged);
             // 
             // _activateOnLaunchCheckBox
             // 
@@ -229,7 +317,7 @@
             this._thresholdTimeInput.TabIndex = 2;
             this._thresholdTimeInput.TabStop = false;
             this._thresholdTimeInput.Value = new decimal(new int[] {
-            20,
+            50,
             0,
             0,
             0});
@@ -279,11 +367,24 @@
             this._exitMenuItem.Size = new System.Drawing.Size(103, 22);
             this._exitMenuItem.Text = "Exit";
             // 
+            // btnReset
+            // 
+            this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnReset.Location = new System.Drawing.Point(19, 422);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(147, 27);
+            this.btnReset.TabIndex = 6;
+            this.btnReset.TabStop = false;
+            this.btnReset.Text = "Reset Statistics/Diagnose";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.OnResetDiagnosticsClick);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(619, 426);
+            this.ClientSize = new System.Drawing.Size(639, 461);
+            this.Controls.Add(this.btnReset);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this._dataGridGroupBox);
             this.Controls.Add(this._buttonActivate);
@@ -294,6 +395,7 @@
             this.Text = "Keyboard Unchatter";
             this.Resize += new System.EventHandler(this.OnMainWindowResize);
             this._statusPanel.ResumeLayout(false);
+            this._statusPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._mainDataGrid)).EndInit();
             this._dataGridGroupBox.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -328,6 +430,14 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn FailureRate;
         private System.Windows.Forms.CheckBox _activateOnLaunchCheckBox;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox _runAtStartupCheckBox;
+        private System.Windows.Forms.Label labelTypingSpeed;
+        private System.Windows.Forms.RichTextBox tbTestInput;
+        private System.Windows.Forms.ListBox listBoxIntervals;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnReset;
     }
 }
 

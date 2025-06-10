@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace KeyboardUnchatter
 {
@@ -15,12 +17,19 @@ namespace KeyboardUnchatter
     {
         private Color _activeColor;
         private DataGridController _dataGridController;
+        private List<long> _intervals = new List<long>();
+        private DateTime _lastKeyTime = DateTime.MinValue;
+        private int _maxEntries = 50;
 
         public MainWindow()
         {
             _activeColor = Color.FromArgb(255, 255, 102, 0);
 
             InitializeComponent();
+
+            // Set window title using assembly title and version
+            this.Text = GetAppTitleWithVersion();
+
             Program.KeyboardMonitor.OnKeyBlocked += OnKeyBlocked;
             Program.KeyboardMonitor.OnKeyPress += OnKeyPress;
 
@@ -29,8 +38,14 @@ namespace KeyboardUnchatter
             _thresholdTimeInput.Value = Properties.Settings.Default.chatterThreshold;
             _minimizeCheckBox.Checked = Properties.Settings.Default.openMinimized;
             _activateOnLaunchCheckBox.Checked = Properties.Settings.Default.activateOnLaunch;
+            _runAtStartupCheckBox.Checked = Program.GetStartup();
+            _runAtStartupCheckBox.CheckedChanged += OnRunAtStartupCheckBoxChanged;
 
             _dataGridController = new DataGridController(_mainDataGrid);
+
+            listBoxIntervals.DrawMode = DrawMode.OwnerDrawFixed;
+            listBoxIntervals.DrawItem += ListBoxIntervals_DrawItem;
+            Program.InputHook.OnTypingMedianChanged += UpdateTypingSpeedLabel;
 
             if (Properties.Settings.Default.activateOnLaunch)
             {
@@ -38,9 +53,21 @@ namespace KeyboardUnchatter
             }
         }
 
+        // Helper method to get title and version
+        private static string GetAppTitleWithVersion()
+        {
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var titleAttr = assembly.GetCustomAttribute<System.Reflection.AssemblyTitleAttribute>();
+            var version = assembly.GetName().Version;
+            string title = titleAttr != null ? titleAttr.Title : assembly.GetName().Name;
+            return $"{title} v{version}";
+        }
+
         private void OnKeyPress(Keys key)
         {
             _dataGridController.AddKeyPress(key);
+            //_diagnoseWindow?.RegisterKeyPress();
+            RegisterKeyPress();
         }
 
         private void OnKeyBlocked(Keys key)
@@ -53,6 +80,7 @@ namespace KeyboardUnchatter
             base.OnFormClosing(e);
             Program.KeyboardMonitor.OnKeyBlocked -= OnKeyBlocked;
             Program.KeyboardMonitor.OnKeyPress -= OnKeyPress;
+            Program.InputHook.OnTypingMedianChanged -= UpdateTypingSpeedLabel;
             _notifyIcon.Visible = false;
         }
 
@@ -65,8 +93,48 @@ namespace KeyboardUnchatter
             }
             Activate();
         }
-
+        public void ResetDiagnostics()
+        {
+            _intervals.Clear();
+            _lastKeyTime = DateTime.MinValue;
+            labelTypingSpeed.Text = "Typing speed: N/A";
+        }
+        public void RegisterKeyPress()
+        {
+            var now = DateTime.Now;
+            if (_lastKeyTime != DateTime.MinValue)
+            {
+                var interval = (long)(now - _lastKeyTime).TotalMilliseconds;
+                _intervals.Insert(0, interval);
+                if (_intervals.Count > _maxEntries)
+                    _intervals.RemoveAt(_intervals.Count - 1);
+                listBoxIntervals.Items.Insert(0, interval);
+                if (listBoxIntervals.Items.Count > _maxEntries)
+                    listBoxIntervals.Items.RemoveAt(listBoxIntervals.Items.Count - 1);
+            }
+            _lastKeyTime = now;
+        }
+        private void UpdateTypingSpeedLabel(double median)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action<double>(UpdateTypingSpeedLabel), median);
+                return;
+            }
+            labelTypingSpeed.Text = $"Median: {median:0} ms | {(median > 0 ? 1000.0 / median : 0):0.0} keys/sec";
+        }
         #region Events
+
+        private void ListBoxIntervals_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0) return;
+            var interval = (long)listBoxIntervals.Items[e.Index];
+            bool isChatter = interval < Program.KeyboardMonitor.ChatterTimeMs;
+            e.DrawBackground();
+            var color = isChatter ? Brushes.Red : Brushes.Black;
+            e.Graphics.DrawString(interval + " ms", e.Font, color, e.Bounds);
+            e.DrawFocusRectangle();
+        }
 
         private void OnActivateButtonClick(object sender, EventArgs e)
         {
@@ -88,6 +156,7 @@ namespace KeyboardUnchatter
             _buttonActivate.Text = "Stop";
             _statusPanelLabel.Text = "Active";
 
+            Program.InputHook.TypingSpeedEnabled = true;
             Program.KeyboardMonitor.Activate();
         }
 
@@ -98,6 +167,7 @@ namespace KeyboardUnchatter
             _buttonActivate.Text = "Activate";
             _statusPanelLabel.Text = "Not Active";
 
+            Program.InputHook.TypingSpeedEnabled = false;
             Program.KeyboardMonitor.Deactivate();
         }
 
@@ -149,6 +219,10 @@ namespace KeyboardUnchatter
             Properties.Settings.Default.Save();
         }
 
+        private void OnRunAtStartupCheckBoxChanged(object sender, EventArgs e)
+        {
+            Program.SetStartup(_runAtStartupCheckBox.Checked);
+        }
 
         private void DataSortCompare(object sender, DataGridViewSortCompareEventArgs e)
         {
@@ -167,7 +241,16 @@ namespace KeyboardUnchatter
                 e.Handled = true;
             }
         }
-        #endregion
 
+        private void OnResetDiagnosticsClick(object sender, EventArgs e)
+        {
+            Program.InputHook?.ResetDiagnostics();
+            Program.KeyboardMonitor?.ResetStatistics();
+            ResetDiagnostics();
+            _dataGridController.Reset();
+            tbTestInput.Clear();
+        }
+
+        #endregion
     }
 }

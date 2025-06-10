@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace KeyboardUnchatter
 {
@@ -40,6 +42,29 @@ namespace KeyboardUnchatter
 
         public Func<KeyPress,bool> OnHandleKey;
 
+        private List<long> _intervals = new List<long>();
+        private DateTime _lastKeyTime = DateTime.MinValue;
+        private const int MaxEntries = 50;
+
+        public bool TypingSpeedEnabled { get; set; } = false;
+
+        public double TypingMedianMs
+        {
+            get
+            {
+                if (_intervals.Count == 0) return 0;
+                var sorted = _intervals.OrderBy(x => x).ToList();
+                int count = sorted.Count;
+                if (count % 2 == 1)
+                    return sorted[count / 2];
+                else
+                    return (sorted[(count / 2) - 1] + sorted[count / 2]) / 2.0;
+            }
+        }
+
+        // Optional: event for live updates
+        public event Action<double> OnTypingMedianChanged;
+
         public InputHook()
         {
             _keyboardHookHandlerDelegate = new HookHandlerDelegate(KeyboardHookCallback);
@@ -71,6 +96,23 @@ namespace KeyboardUnchatter
                 }
 
                 allowContinue = HandleKey(new KeyPress(lParam.vkCode, keyStatus));
+            }
+
+            if (TypingSpeedEnabled)
+            if (nCode >= 0 && (wParam == (IntPtr)WM_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN))
+            {
+                var now = DateTime.Now;
+                if (_lastKeyTime != DateTime.MinValue)
+                {
+                    var interval = (long)(now - _lastKeyTime).TotalMilliseconds;
+                    _intervals.Add(interval);
+                    if (_intervals.Count > MaxEntries)
+                        _intervals.RemoveAt(0);
+
+                    // Raise event if needed
+                    OnTypingMedianChanged?.BeginInvoke(TypingMedianMs, null, null);
+                }
+                _lastKeyTime = now;
             }
 
             if(allowContinue)
@@ -142,6 +184,13 @@ namespace KeyboardUnchatter
             {
                 _keyboardHookID = NativeMethods.SetWindowsHookEx(WH_KEYBOARD_LL, _keyboardHookHandlerDelegate, NativeMethods.GetModuleHandle(curModule.ModuleName), 0);
             }
+        }
+
+        public void ResetDiagnostics()
+        {
+            _intervals.Clear();
+            _lastKeyTime = DateTime.MinValue;
+            OnTypingMedianChanged?.Invoke(0);
         }
 
         #region Native methods

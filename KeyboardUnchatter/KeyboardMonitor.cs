@@ -76,7 +76,7 @@ namespace KeyboardUnchatter
 
                 if(timeSpan < _chatterTimeMs)
                 {
-                    Debug.Log("Key" + key.KeyCode + " timeSpawn is below limit. Blocking");
+                    Debug.Log("Key" + key.KeyCode + " timeSpawn:" + timeSpan + "ms is below limit. Blocking");
                     key.Block();
                     RegisterChatterPress(keyPress.Key);
                     return false;
@@ -125,6 +125,12 @@ namespace KeyboardUnchatter
             {
                 OnKeyBlocked(key);
             }
+        }
+
+        public void ResetStatistics()
+        {
+            _keyStatusList.Clear();
+            // Add any additional statistic resets here if needed
         }
     }
 }

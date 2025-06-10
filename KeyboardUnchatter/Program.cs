@@ -65,6 +65,48 @@ namespace KeyboardUnchatter
             Application.Exit();
         }
 
+        private static readonly string runKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
 
+        public static void SetStartup(bool enable)
+        {
+            string appName = Application.ProductName;
+            string exePath = Application.ExecutablePath;
+
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(runKey, true))
+            {
+                if (enable)
+                {
+                    key.SetValue(appName, $"\"{exePath}\"");
+                }
+                else
+                {
+                    key.DeleteValue(appName, false);
+                }
+            }
+        }
+
+        public static bool GetStartup()
+        {
+            // Registry key for user-specific startup programs
+            string appName = Application.ProductName;
+            string exePath = Application.ExecutablePath;
+
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(runKey, false))
+            {
+                if (key == null)
+                    return false;
+
+                var value = key.GetValue(appName) as string;
+                if (string.IsNullOrEmpty(value))
+                    return false;
+
+                // Compare the stored path (trim quotes) with the current executable path
+                return string.Equals(
+                    value.Trim('"'),
+                    exePath,
+                    StringComparison.InvariantCultureIgnoreCase
+                );
+            }
+        }
     }
 }
