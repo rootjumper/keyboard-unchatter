@@ -4,6 +4,7 @@ using System.Windows;
 using System.Configuration;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using Microsoft.Win32;
 
 namespace KeyboardUnchatter
 {
@@ -36,6 +37,15 @@ namespace KeyboardUnchatter
 
             using (_inputHook = new InputHook())
             {
+                // PowerModeChanged abonnieren
+                SystemEvents.PowerModeChanged += (s, e) =>
+                {
+                    if (e.Mode == PowerModes.Resume)
+                    {
+                        _inputHook.Rehook();
+                    }
+                };
+
                 _keyboardMonitor = new KeyboardMonitor();
 
                 _mainWindow = new MainWindow();

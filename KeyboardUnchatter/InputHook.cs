@@ -125,6 +125,25 @@ namespace KeyboardUnchatter
             NativeMethods.UnhookWindowsHookEx(_keyboardHookID);
         }
 
+        /// <summary>
+        /// Rehooks the WH_KEYBOARD_LL hook. This is useful if the hook needs to be reset, for example after a system resume from sleep or hibernation.
+        /// </summary>
+        public void Rehook()
+        {
+            // Erst Hook entfernen, dann neu setzen
+            if (_keyboardHookID != IntPtr.Zero)
+            {
+                NativeMethods.UnhookWindowsHookEx(_keyboardHookID);
+                _keyboardHookID = IntPtr.Zero;
+            }
+
+            using (Process curProcess = Process.GetCurrentProcess())
+            using (ProcessModule curModule = curProcess.MainModule)
+            {
+                _keyboardHookID = NativeMethods.SetWindowsHookEx(WH_KEYBOARD_LL, _keyboardHookHandlerDelegate, NativeMethods.GetModuleHandle(curModule.ModuleName), 0);
+            }
+        }
+
         #region Native methods
 
         [ComVisibleAttribute(false), System.Security.SuppressUnmanagedCodeSecurity()]
