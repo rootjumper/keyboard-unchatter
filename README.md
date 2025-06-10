@@ -38,4 +38,4 @@ I don't recommend using this tool while playing games. In future releases, an op
 
 # Screenshots
 
-![Example](https://github.com/ZoserLock/keyboard-unchatter/raw/master/Images/example.png)
+![Example](https://github.com/rootjumper/keyboard-unchatter/raw/master/Images/example.png)
