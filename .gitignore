@@ -2,3 +2,4 @@ bin
 obj
 .vs
 *.cssproj.user
+*.csproj.user

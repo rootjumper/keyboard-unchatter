@@ -5,6 +5,11 @@ Application to fix the keyboard chattering of mechanical switches
 
 This application fixes repeated keys in damaged mechanical switches by filtering all repeated keystrokes that occur within a certain timespan. If two or more keypresses are detected inside that time, only the first keypress will be sent to other applications.
 
+## Platform Support
+
+- **Windows**: Full-featured Windows application with Windows Forms GUI ([KeyboardUnchatter/](KeyboardUnchatter/))
+- **Linux**: Native Linux version with GTK+ GUI ([KeyboardUnchatter.Linux/](KeyboardUnchatter.Linux/)) - See [Linux README](KeyboardUnchatter.Linux/README.md) for installation and usage instructions
+
 ## New Features
 
 - **Diagnostics:**  
