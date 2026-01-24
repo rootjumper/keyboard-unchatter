@@ -1,0 +1,14 @@
+[Unit]
+Description=Keyboard Unchatter - Fix keyboard chattering
+After=graphical.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/KeyboardUnchatter.Linux
+Restart=on-failure
+RestartSec=5
+Environment="DISPLAY=:0"
+Environment="XAUTHORITY=%h/.Xauthority"
+
+[Install]
+WantedBy=default.target
