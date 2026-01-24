@@ -329,10 +329,17 @@ namespace KeyboardUnchatter.Linux
                 
                 if (enable)
                 {
-                    string exePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                    // Try to get the actual executable path
+                    string exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName 
+                                     ?? System.Reflection.Assembly.GetExecutingAssembly().Location;
+                    
+                    // If it's still a .dll path, try to use the standard installation location
                     if (exePath.EndsWith(".dll"))
                     {
-                        exePath = exePath.Replace(".dll", "");
+                        exePath = System.IO.Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                            ".local", "bin", "KeyboardUnchatter.Linux"
+                        );
                     }
                     
                     string desktopEntry = $@"[Desktop Entry]

@@ -11,7 +11,6 @@ namespace KeyboardUnchatter.Linux
         private static LinuxInputHook? _inputHook;
         private static KeyboardMonitor? _keyboardMonitor;
         private static MainWindow? _mainWindow;
-        private static bool _running = true;
 
         [STAThread]
         public static void Main(string[] args)
@@ -125,7 +124,6 @@ namespace KeyboardUnchatter.Linux
             {
                 Console.WriteLine("\nReceived interrupt signal. Shutting down gracefully...");
                 eventArgs.Cancel = true;
-                _running = false;
                 Application.Quit();
             };
 

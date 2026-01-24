@@ -6,7 +6,7 @@ Linux-compatible version of Keyboard Unchatter that provides keyboard chatter fi
 
 - **Keyboard Chatter Detection**: Filters repeated keypresses within a configurable threshold (default 50ms)
 - **Multiple Keyboard Support**: Automatically detects and monitors all connected keyboard devices
-- **GTK+ GUI**: Native Linux interface with status monitoring and configuration
+- **GTK# GUI**: Native Linux interface with status monitoring and configuration
 - **Key Statistics**: Track press count, chatter count, and failure rate per key
 - **Typing Speed Diagnostics**: Real-time typing speed analysis
 - **Persistent Configuration**: XDG-compliant configuration storage (~/.config/keyboard-unchatter/)

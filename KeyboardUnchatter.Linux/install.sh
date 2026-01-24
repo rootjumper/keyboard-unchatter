@@ -36,8 +36,8 @@ echo -e "${GREEN}✓ .NET is installed${NC}"
 
 # Check .NET version
 DOTNET_VERSION=$(dotnet --version | cut -d'.' -f1)
-if [ "$DOTNET_VERSION" -lt 6 ]; then
-    echo -e "${YELLOW}WARNING: .NET version may be too old. Please install .NET 6.0 or later.${NC}"
+if [ "$DOTNET_VERSION" -lt 8 ]; then
+    echo -e "${YELLOW}WARNING: .NET version may be too old. Please install .NET 8.0 or later.${NC}"
 fi
 
 # Build the application

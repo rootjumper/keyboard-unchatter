@@ -286,7 +286,7 @@ namespace KeyboardUnchatter.Linux
                     }
                 }
 
-                await Task.Delay(1, cancellationToken);
+                await Task.Delay(5, cancellationToken);
             }
 
             // Release devices
