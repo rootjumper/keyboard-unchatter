@@ -47,6 +47,8 @@
             this.tbTestInput = new System.Windows.Forms.RichTextBox();
             this.listBoxIntervals = new System.Windows.Forms.ListBox();
             this._runAtStartupCheckBox = new System.Windows.Forms.CheckBox();
+            this._startAsAdminCheckBox = new System.Windows.Forms.CheckBox();
+            this.label8 = new System.Windows.Forms.Label();
             this._activateOnLaunchCheckBox = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -60,14 +62,14 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this._exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnReset = new System.Windows.Forms.Button();
+            this._relaunchAsAdminButton = new System.Windows.Forms.Button();
             this._statusPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._mainDataGrid)).BeginInit();
             this._dataGridGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._thresholdTimeInput)).BeginInit();
             this._notifyIconMenuStrip.SuspendLayout();
-            this.SuspendLayout();
-            // 
+            this.SuspendLayout();            // 
             // _statusPanel
             // 
             this._statusPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -107,7 +109,7 @@
             // _buttonActivate
             // 
             this._buttonActivate.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this._buttonActivate.Location = new System.Drawing.Point(248, 422);
+            this._buttonActivate.Location = new System.Drawing.Point(248, 444);
             this._buttonActivate.Name = "_buttonActivate";
             this._buttonActivate.Size = new System.Drawing.Size(137, 27);
             this._buttonActivate.TabIndex = 2;
@@ -136,7 +138,7 @@
             this._mainDataGrid.MultiSelect = false;
             this._mainDataGrid.Name = "_mainDataGrid";
             this._mainDataGrid.RowHeadersVisible = false;
-            this._mainDataGrid.Size = new System.Drawing.Size(603, 212);
+            this._mainDataGrid.Size = new System.Drawing.Size(603, 190);
             this._mainDataGrid.TabIndex = 3;
             this._mainDataGrid.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.DataSortCompare);
             // 
@@ -166,9 +168,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._dataGridGroupBox.Controls.Add(this._mainDataGrid);
-            this._dataGridGroupBox.Location = new System.Drawing.Point(12, 179);
+            this._dataGridGroupBox.Location = new System.Drawing.Point(12, 201);
             this._dataGridGroupBox.Name = "_dataGridGroupBox";
-            this._dataGridGroupBox.Size = new System.Drawing.Size(615, 237);
+            this._dataGridGroupBox.Size = new System.Drawing.Size(615, 215);
             this._dataGridGroupBox.TabIndex = 4;
             this._dataGridGroupBox.TabStop = false;
             this._dataGridGroupBox.Text = "Key Statistics";
@@ -183,6 +185,8 @@
             this.groupBox1.Controls.Add(this.tbTestInput);
             this.groupBox1.Controls.Add(this.listBoxIntervals);
             this.groupBox1.Controls.Add(this._runAtStartupCheckBox);
+            this.groupBox1.Controls.Add(this._startAsAdminCheckBox);
+            this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this._activateOnLaunchCheckBox);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label1);
@@ -192,7 +196,7 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Location = new System.Drawing.Point(12, 48);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(615, 125);
+            this.groupBox1.Size = new System.Drawing.Size(615, 147);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Settings";
@@ -205,6 +209,25 @@
             this.label7.Size = new System.Drawing.Size(66, 13);
             this.label7.TabIndex = 14;
             this.label7.Text = "System Start";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(7, 117);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(72, 13);
+            this.label8.TabIndex = 16;
+            this.label8.Text = "Start as Admin";
+            // 
+            // _startAsAdminCheckBox
+            // 
+            this._startAsAdminCheckBox.AutoSize = true;
+            this._startAsAdminCheckBox.Location = new System.Drawing.Point(112, 116);
+            this._startAsAdminCheckBox.Name = "_startAsAdminCheckBox";
+            this._startAsAdminCheckBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this._startAsAdminCheckBox.Size = new System.Drawing.Size(15, 14);
+            this._startAsAdminCheckBox.TabIndex = 15;
+            this._startAsAdminCheckBox.UseVisualStyleBackColor = true;
             // 
             // label6
             // 
@@ -370,7 +393,7 @@
             // btnReset
             // 
             this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnReset.Location = new System.Drawing.Point(19, 422);
+            this.btnReset.Location = new System.Drawing.Point(19, 444);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(147, 27);
             this.btnReset.TabIndex = 6;
@@ -379,11 +402,24 @@
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.OnResetDiagnosticsClick);
             // 
+            // _relaunchAsAdminButton
+            // 
+            this._relaunchAsAdminButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._relaunchAsAdminButton.Location = new System.Drawing.Point(473, 444);
+            this._relaunchAsAdminButton.Name = "_relaunchAsAdminButton";
+            this._relaunchAsAdminButton.Size = new System.Drawing.Size(147, 27);
+            this._relaunchAsAdminButton.TabIndex = 7;
+            this._relaunchAsAdminButton.TabStop = false;
+            this._relaunchAsAdminButton.Text = "Relaunch as Admin";
+            this._relaunchAsAdminButton.UseVisualStyleBackColor = true;
+            this._relaunchAsAdminButton.Click += new System.EventHandler(this.OnRelaunchAsAdminClick);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(639, 461);
+            this.ClientSize = new System.Drawing.Size(639, 483);
+            this.Controls.Add(this._relaunchAsAdminButton);
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this._dataGridGroupBox);
@@ -431,6 +467,8 @@
         private System.Windows.Forms.CheckBox _activateOnLaunchCheckBox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox _runAtStartupCheckBox;
+        private System.Windows.Forms.CheckBox _startAsAdminCheckBox;
+        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label labelTypingSpeed;
         private System.Windows.Forms.RichTextBox tbTestInput;
         private System.Windows.Forms.ListBox listBoxIntervals;
@@ -438,6 +476,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.Button _relaunchAsAdminButton;
     }
 }
 
