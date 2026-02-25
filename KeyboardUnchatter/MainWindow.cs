@@ -41,6 +41,15 @@ namespace KeyboardUnchatter
             _runAtStartupCheckBox.Checked = Program.GetStartup();
             _runAtStartupCheckBox.CheckedChanged += OnRunAtStartupCheckBoxChanged;
 
+            _startAsAdminCheckBox.Checked = Program.GetStartupAsAdmin();
+            _startAsAdminCheckBox.CheckedChanged += OnStartAsAdminCheckBoxChanged;
+
+            if (Program.IsRunningAsAdmin())
+            {
+                _relaunchAsAdminButton.Enabled = false;
+                _relaunchAsAdminButton.Text = "Running as Admin";
+            }
+
             _dataGridController = new DataGridController(_mainDataGrid);
 
             listBoxIntervals.DrawMode = DrawMode.OwnerDrawFixed;
@@ -222,6 +231,35 @@ namespace KeyboardUnchatter
         private void OnRunAtStartupCheckBoxChanged(object sender, EventArgs e)
         {
             Program.SetStartup(_runAtStartupCheckBox.Checked);
+            if (_runAtStartupCheckBox.Checked)
+            {
+                // Uncheck Start as Admin since they are mutually exclusive
+                _startAsAdminCheckBox.CheckedChanged -= OnStartAsAdminCheckBoxChanged;
+                _startAsAdminCheckBox.Checked = false;
+                _startAsAdminCheckBox.CheckedChanged += OnStartAsAdminCheckBoxChanged;
+            }
+        }
+
+        private void OnStartAsAdminCheckBoxChanged(object sender, EventArgs e)
+        {
+            Program.SetStartupAsAdmin(_startAsAdminCheckBox.Checked);
+            // Re-read actual state in case UAC was cancelled
+            _startAsAdminCheckBox.CheckedChanged -= OnStartAsAdminCheckBoxChanged;
+            _startAsAdminCheckBox.Checked = Program.GetStartupAsAdmin();
+            _startAsAdminCheckBox.CheckedChanged += OnStartAsAdminCheckBoxChanged;
+
+            if (_startAsAdminCheckBox.Checked)
+            {
+                // Uncheck regular startup since they are mutually exclusive
+                _runAtStartupCheckBox.CheckedChanged -= OnRunAtStartupCheckBoxChanged;
+                _runAtStartupCheckBox.Checked = false;
+                _runAtStartupCheckBox.CheckedChanged += OnRunAtStartupCheckBoxChanged;
+            }
+        }
+
+        private void OnRelaunchAsAdminClick(object sender, EventArgs e)
+        {
+            Program.RelaunchAsAdmin();
         }
 
         private void DataSortCompare(object sender, DataGridViewSortCompareEventArgs e)
