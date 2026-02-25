@@ -28,6 +28,7 @@ This application fixes repeated keys in damaged mechanical switches by filtering
 
 [Version 1.0.1](https://github.com/ZoserLock/keyboard-unchatter/releases/tag/v1.0.1)
 [Version 1.1.0](https://github.com/rootjumper/keyboard-unchatter/releases/tag/v1.1.0)
+[Version 1.1.0](https://github.com/rootjumper/keyboard-unchatter/releases/tag/v1.2.0)
 
 # Known Issues
 
